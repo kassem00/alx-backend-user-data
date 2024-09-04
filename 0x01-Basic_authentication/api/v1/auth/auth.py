@@ -9,6 +9,8 @@ from typing import List, TypeVar
 
 class Auth():
     """ auth module """
+
+
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         returns False - path and excluded_paths will be used later, now,
@@ -25,4 +27,3 @@ class Auth():
     def current_user(self, request=None) -> TypeVar('User'):
         """ that returns None - request will be the Flask request object """
         return None
-

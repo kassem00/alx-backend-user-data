@@ -18,6 +18,10 @@ excl = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
 auth = None
 AUTH_TYPE = getenv("AUTH_TYPE")
 
+# Set the auth variable based on AUTH_TYPE
+if AUTH_TYPE == "auth":
+    auth = Auth()
+
 
 @app.before_request
 def before_request_func():

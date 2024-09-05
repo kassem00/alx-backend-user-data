@@ -1,30 +1,34 @@
 #!/usr/bin/env python3
-
-
 """
 auth class
 """
 
-
-from os import getenv
-from flask import Flask, jsonify, abort, request
 from typing import List, TypeVar
-
+from flask import request
 
 class Auth():
     """ auth module """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
-        returns False - path and excluded_paths will be used later, now,
-        you don’t need to take care of them
+        Determines if authentication is required based on path and excluded_paths.
         """
-        return False
+        if path is None or not isinstance(path, str) or\
+           excluded_paths is None or not excluded_paths:
+            return True
+
+        path = path.rstrip('/')
+        excluded_paths = [p.rstrip('/') for p in excluded_paths]
+
+        if path in excluded_paths:
+            return False
+
+        return True
 
     def authorization_header(self, request=None) -> str:
-        """  that returns None - request will be the Flask request object """
+        """Returns None, will be implemented later."""
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ that returns None - request will be the Flask request object """
+        """Returns None, will be implemented later."""
         return None

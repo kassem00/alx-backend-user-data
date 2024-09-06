@@ -10,7 +10,6 @@ from flask import request
 class Auth():
     """ auth module """
 
-
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         Determines if authentication is
@@ -27,13 +26,13 @@ class Auth():
             return False
         return True
 
-
     def authorization_header(self, request=None) -> str:
-        """Returns the Authorization header if present, otherwise returns None."""
+        """
+        Returns the Authorization header if present, otherwise returns None
+        ."""
         if request is None or 'Authorization' not in request.headers:
             return None
         return request.headers.get('Authorization')
-
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Returns None, will be implemented later."""

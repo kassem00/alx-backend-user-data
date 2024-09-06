@@ -5,7 +5,8 @@ auth class
 
 from typing import List, TypeVar
 from flask import request
+from auth import Auth
 
-
-class BasicAuth():
+class BasicAuth(Auth):
     """ BasicAuth class """
+    pass

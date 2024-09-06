@@ -53,6 +53,7 @@ class BasicAuth(Auth):
         # Search for the user by email using the search method
         users = User.search({'email': user_email})
 
+        # If no users found, return None
         if not users:
             return None
 

@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 """
-auth class
+BasicAuth class
 """
 
-from typing import List, TypeVar
-from flask import request
 from api.v1.auth.auth import Auth
 
 
 class BasicAuth(Auth):
     """ BasicAuth class """
+
     def extract_base64_authorization_header(self, authorization_header: str) -> str:
         """
-        that returns the Base64 part of the Authorization header for a
-        Basic Authentication
+        Returns the Base64 part of the Authorization header
+        for Basic Authentication
         """
         if authorization_header is None or\
-           isinstance(authorization_header) is not str or\
-           "Basis " not in authorization_header:
+           not isinstance(authorization_header, str) or\
+           not authorization_header.startswith("Basic "):
             return None
-        else:
-            a = authorization_header.split(" ")
-            return a[1]
+
+        return authorization_header.split(" ")[1]

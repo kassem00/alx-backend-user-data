@@ -37,4 +37,7 @@ class DB:
         session.commit()
         return new_user
 
-    def find_user_by(**kargs)
+    def find_user_by(**kargs):
+        """
+
+        """

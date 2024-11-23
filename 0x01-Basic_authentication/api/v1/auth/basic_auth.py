@@ -78,9 +78,11 @@ class BasicAuth(Auth):
         """
         overloads Auth and retrieves the User instance for a request
         """
+
         au_he = auth.authorization_header(request)
         if au_he ==  None:
             return
-        b64 =extract_base64_authorization_header(au_he)
+
+        b64 = extract_base64_authorization_header(au_he)
         if b64 == None:
             return

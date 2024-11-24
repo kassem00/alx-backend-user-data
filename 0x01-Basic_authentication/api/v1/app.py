@@ -42,8 +42,10 @@ def before_request_func():
     if auth.authorization_header(request) is None:
         abort(401)  # Unauthorized: Missing Authorization header
 
+    request.current_user = auth.current_user(request)
     if auth.current_user(request) is None:
         abort(403)  # Forbidden: Invalid user
+
 
 
 @app.errorhandler(404)

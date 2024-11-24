@@ -14,23 +14,25 @@ from api.v1.auth.basic_auth import BasicAuth
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
+# Define paths excluded from authentication
 excl = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
 
-
-
+# Set up authentication
 AUTH_TYPE = getenv("AUTH_TYPE")
-
 if AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
 elif AUTH_TYPE == "auth":
     auth = Auth()
 else:
-    auth = None 
+    auth = None
 
 
 @app.before_request
 def before_request_func():
-    """ Filter requests before they reach the endpoint """
+    """
+    Filter requests before they reach the endpoint.
+    """
     if auth is None:
         return
 
@@ -38,33 +40,28 @@ def before_request_func():
         return
 
     if auth.authorization_header(request) is None:
-        abort(401)
+        abort(401)  # Unauthorized: Missing Authorization header
 
     if auth.current_user(request) is None:
-        abort(403)
+        abort(403)  # Forbidden: Invalid user
 
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """ Not found handler
-    """
+    """ Not found handler """
     return jsonify({"error": "Not found"}), 404
 
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """ unauthorized Access
-    """
+    """ Unauthorized Access """
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
-    """ unauthorized Access
-    """
+    """ Forbidden Access """
     return jsonify({"error": "Forbidden"}), 403
-
-
 
 
 if __name__ == "__main__":

@@ -1,36 +1,32 @@
-#!/usr/bin/env python3
-""" Main 5
+#!/usr/bin/python3
+""" Check response
 """
-import uuid
-from api.v1.auth.basic_auth import BasicAuth
-from models.user import User
+import requests
 
-""" Create a user test """
-user_email = str(uuid.uuid4())
-user_clear_pwd = str(uuid.uuid4())
-user = User()
-user.email = user_email
-user.first_name = "Bob"
-user.last_name = "Dylan"
-user.password = user_clear_pwd
-print("New user: {}".format(user.display_name()))
-user.save()
-
-""" Retreive this user via the class BasicAuth """
-
-a = BasicAuth()
-
-u = a.user_object_from_credentials(None, None)
-print(u.display_name() if u is not None else "None")
-
-u = a.user_object_from_credentials(89, 98)
-print(u.display_name() if u is not None else "None")
-
-u = a.user_object_from_credentials("email@notfound.com", "pwd")
-print(u.display_name() if u is not None else "None")
-
-u = a.user_object_from_credentials(user_email, "pwd")
-print(u.display_name() if u is not None else "None")
-
-u = a.user_object_from_credentials(user_email, user_clear_pwd)
-print(u.display_name() if u is not None else "None")
+if __name__ == "__main__":
+    r = requests.get('http://0.0.0.0:3456/api/v1/users', headers={ 'Authorization': "HBTN" })
+    if r.status_code != 403:
+        print("Wrong status code: {}".format(r.status_code))
+        exit(1)
+    if r.headers.get('content-type') != "application/json":
+        print("Wrong content type: {}".format(r.headers.get('content-type')))
+        exit(1)
+    
+    try:
+        r_json = r.json()
+        
+        if len(r_json.keys()) != 1:
+            print("Not the right number of element in the JSON: {}".format(r_json))
+            exit(1)
+        
+        error_value = r_json.get('error')
+        if error_value is None:
+            print("Missing 'error' key in the JSON: {}".format(r_json))
+            exit(1)
+        if error_value != "Forbidden":
+            print("'error' doesn't have the right value: {}".format(error_value))
+            exit(1)
+            
+        print("OK", end="")
+    except:
+        print("Error, not a JSON")

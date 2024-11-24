@@ -17,17 +17,15 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 excl = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
 
 
-auth = None
+
 AUTH_TYPE = getenv("AUTH_TYPE")
-
-
-if AUTH_TYPE == "auth":
-    auth = Auth()
-
 
 if AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
-
+elif AUTH_TYPE == "auth":
+    auth = Auth()
+else:
+    auth = None 
 
 
 @app.before_request
@@ -65,6 +63,8 @@ def forbidden(error) -> str:
     """ unauthorized Access
     """
     return jsonify({"error": "Forbidden"}), 403
+
+
 
 
 if __name__ == "__main__":

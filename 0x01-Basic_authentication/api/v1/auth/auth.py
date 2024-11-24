@@ -37,12 +37,13 @@ class Auth():
     def current_user(self, request=None) -> TypeVar('User'):
         """Returns None, will be implemented later."""
         header = self.authorization_header(request)
-        if "Basic" in header:
+        if "Basic " in header:
             e = extract_base64_authorization_header(request)
             d = decode_base64_authorization_header(e)
             email_password = user_object_from_credentials(d)
             if len(email_password) == 2:
-                user_object_from_credentials(email_password[0],email_password[1])
+                if user_object_from_credentials(email_password[0],email_password[1]):
+                    
             else:
                 return None
         else:

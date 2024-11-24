@@ -12,7 +12,7 @@ import base64
 class BasicAuth(Auth):
     """ BasicAuth class """
 
-    def extract_base64_authorization_header(self, authorization_header: str) -> str:
+    def extract_base64_authorization_header(self, authorization_header: str):
         """
         Returns the Base64 part of the Authorization header
         for Basic Authentication
@@ -24,7 +24,7 @@ class BasicAuth(Auth):
 
         return authorization_header.split(" ")[1]
 
-    def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:
+    def decode_base64_authorization_header(self, base64_authorization_header):
         """
         Decodes Base64 string to plain text.
         """
@@ -37,7 +37,7 @@ class BasicAuth(Auth):
         except (ValueError, UnicodeDecodeError):
             return None
 
-    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):
+    def extract_user_credentials(self, decoded_base64_authorization_header):
         """
         Extracts user email and password from the decoded Base64 string.
         """
@@ -49,7 +49,7 @@ class BasicAuth(Auth):
         credentials = decoded_base64_authorization_header.split(":", 1)
         return credentials[0], credentials[1]
 
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(self, user_email: str, user_pwd: str):
         """
         Returns a User instance based on email and password.
         """

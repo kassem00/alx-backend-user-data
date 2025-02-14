@@ -1,0 +1,4 @@
+pycodestyle
+SQLAlchemy==1.3.x
+flask
+bcrypt
